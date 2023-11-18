@@ -115,6 +115,51 @@ public class ASDI implements Parser{
                         break;
                     }
                 }
+                else if (pila.peek() == "A1"){
+                    if(preanalisis.tipo == TipoToken.FROM){
+                        pila.pop();
+                    }
+                    else if(preanalisis.tipo == TipoToken.COMA){
+                        pila.pop();
+                        pila.push("A");
+                        i++;
+                        preanalisis = tokens.get(i);
+                    }
+                    else{
+                        hayErrores = true;
+                        System.out.println("Error: Se esperaba \",\" o \"from\".");
+                        break;
+                    }
+                }
+                else if (pila.peek() == "A2"){
+                    if(preanalisis.tipo == TipoToken.IDENTIFICADOR){
+                        pila.pop();
+                        pila.push("A3");
+                        i++;
+                        preanalisis = tokens.get(i);
+                    }
+                    else{
+                        hayErrores = true;
+                        System.out.println("Error: Parametro Faltante");
+                        break;
+                    }
+                }
+                else if (pila.peek() == "A3"){
+                    if(preanalisis.tipo == TipoToken.FROM || preanalisis.tipo == TipoToken.COMA){
+                        pila.pop();
+                    }
+                    else if(preanalisis.tipo == TipoToken.PUNTO){
+                        pila.pop();
+                        i++;
+                        preanalisis = tokens.get(i);
+                        pila.push(TipoToken.IDENTIFICADOR);
+                    }
+                    else{
+                        hayErrores = true;
+                        System.out.println("Error: Se esperaba \",\", \"from\" o un IDENTIFICADOR.");
+                        break;
+                    }
+                }
             }
         }
         if(sinc){
